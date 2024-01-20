@@ -1,0 +1,39 @@
+## This is development intended (cause the volumes...)
+name: sleepr
+services:
+  
+  reservations:
+    container_name: reservations
+    build:
+      context: .
+      dockerfile: ./apps/reservations/Dockerfile
+      target: development
+    command: pnpm run start:dev reservations
+    ports:
+      - '3000:3000'
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    networks:
+      - reservations_db
+
+  mongo-db:
+    container_name: mongo-db
+    image: mongo # container image to be used
+    restart: "no" 
+    ports: # expose ports in “host:container” format
+      - 27017:27017
+    volumes:
+      - mongo-data:/data/db
+    environment: #env variables to pass into the container
+       MONGODB_DATABASE: sleepr
+    networks:
+      - reservations_db
+
+networks:
+  reservations_db:
+    name: reservations_db
+
+volumes:
+  mongo-data:
+    name: 'mongo-data'
