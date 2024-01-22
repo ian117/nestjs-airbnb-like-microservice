@@ -17,6 +17,21 @@ services:
     networks:
       - reservations_db
 
+  auth:
+    container_name: auth
+    build:
+      context: .
+      dockerfile: ./apps/auth/Dockerfile
+      target: development
+    command: pnpm run start:dev auth
+    ports:
+      - '3001:3001'
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    networks:
+      - auth_db
+
   mongo-db:
     container_name: mongo-db
     image: mongo # container image to be used
@@ -29,10 +44,13 @@ services:
        MONGODB_DATABASE: sleepr
     networks:
       - reservations_db
+      - auth_db
 
 networks:
   reservations_db:
     name: reservations_db
+  auth_db:
+    name: auth_db
 
 volumes:
   mongo-data:
