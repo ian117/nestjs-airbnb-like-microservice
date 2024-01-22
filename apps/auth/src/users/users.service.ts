@@ -1,4 +1,8 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  Injectable,
+  UnauthorizedException,
+  UnprocessableEntityException,
+} from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UsersRepository } from './users.repository';
 import * as bcrypt from 'bcryptjs';
@@ -9,10 +13,23 @@ export class UsersService {
   constructor(private readonly usersRepository: UsersRepository) {}
 
   async create(createUserDto: CreateUserDto) {
+    await this.validateCreateUserDto(createUserDto);
     return this.usersRepository.create({
       ...createUserDto,
       password: await bcrypt.hash(createUserDto.password, 10),
     });
+  }
+
+  private async validateCreateUserDto(createUserDto: CreateUserDto) {
+    try {
+      // if not exist returns 404
+      await this.usersRepository.findOne({ email: createUserDto.email });
+    } catch (err) {
+      // so we use that 404 for returning cause it doesnt exist
+      return;
+    }
+    // But if exist, that means that we should alert ->
+    throw new UnprocessableEntityException('Email already exists.');
   }
 
   async verifyUser(email: string, password: string) {
