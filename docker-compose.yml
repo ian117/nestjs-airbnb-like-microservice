@@ -16,6 +16,7 @@ services:
       - /usr/src/app/node_modules
     networks:
       - reservations_db
+      - auth_db
     env_file:
       - ./apps/reservations/.env
 
@@ -32,6 +33,7 @@ services:
       - .:/usr/src/app
       - /usr/src/app/node_modules
     networks:
+      - reservations_db
       - auth_db
     env_file:
     - ./apps/auth/.env
