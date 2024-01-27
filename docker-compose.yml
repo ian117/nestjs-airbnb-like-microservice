@@ -15,8 +15,7 @@ services:
       - .:/usr/src/app
       - /usr/src/app/node_modules
     networks:
-      - reservations_db
-      - auth_db
+      - shared_services
     env_file:
       - ./apps/reservations/.env
 
@@ -33,10 +32,26 @@ services:
       - .:/usr/src/app
       - /usr/src/app/node_modules
     networks:
-      - reservations_db
-      - auth_db
+      - shared_services
     env_file:
     - ./apps/auth/.env
+
+  payments:
+    container_name: payments
+    build:
+      context: .
+      dockerfile: ./apps/payments/Dockerfile
+      target: development
+    command: pnpm run start:dev payments
+    ports:
+      - '3003:3003'
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    networks:
+      - shared_services
+    env_file:
+    - ./apps/payments/.env
 
   mongo-db:
     container_name: mongo-db
@@ -49,14 +64,11 @@ services:
     environment: #env variables to pass into the container
        MONGODB_DATABASE: sleepr
     networks:
-      - reservations_db
-      - auth_db
+      - shared_services
 
 networks:
-  reservations_db:
-    name: reservations_db
-  auth_db:
-    name: auth_db
+  shared_services:
+    name: shared_services
 
 volumes:
   mongo-data:
