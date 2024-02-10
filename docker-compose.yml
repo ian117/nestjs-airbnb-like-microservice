@@ -9,6 +9,7 @@ services:
       dockerfile: ./apps/reservations/Dockerfile
       target: development
     command: pnpm run start:dev reservations
+    restart: always
     ports:
       - '3000:3000'
     volumes:
@@ -28,6 +29,7 @@ services:
     command: pnpm run start:dev auth
     ports:
       - '3001:3001'
+    restart: always
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
@@ -45,6 +47,7 @@ services:
     command: pnpm run start:dev payments
     ports:
       - '3003:3003'
+    restart: always
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
