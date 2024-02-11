@@ -45,8 +45,6 @@ services:
       dockerfile: ./apps/payments/Dockerfile
       target: development
     command: pnpm run start:dev payments
-    ports:
-      - '3003:3003'
     restart: always
     volumes:
       - .:/usr/src/app
@@ -55,6 +53,22 @@ services:
       - shared_services
     env_file:
     - ./apps/payments/.env
+
+  notifications:
+    container_name: notifications
+    build:
+      context: .
+      dockerfile: ./apps/notifications/Dockerfile
+      target: development
+    command: pnpm run start:dev notifications
+    restart: always
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    networks:
+      - shared_services
+    env_file:
+    - ./apps/notifications/.env
 
   mongo-db:
     container_name: mongo-db
