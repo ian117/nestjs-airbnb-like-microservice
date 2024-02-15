@@ -28,7 +28,7 @@ export class PaymentsService {
     //   card,
     // });
 
-    const paymentIntent = await this.stripe.paymentIntents.create({
+    const paymentIntent: any = await this.stripe.paymentIntents.create({
       // payment_method: paymentMethod.id,
       payment_method: 'pm_card_visa', // token
       amount: amount * 100,
@@ -37,7 +37,10 @@ export class PaymentsService {
       currency: 'usd',
     });
 
-    this.notificationsService.emit('notify_email', { email });
+    this.notificationsService.emit('notify_email', {
+      email,
+      text: `Your payment of $$${amount} has been compleeted successfully. \n \n Invoice_ID: ${paymentIntent.id}`,
+    });
 
     return paymentIntent;
   }
