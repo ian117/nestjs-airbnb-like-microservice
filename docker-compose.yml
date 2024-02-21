@@ -31,10 +31,10 @@ services:
     ports:
       - '3001:3001'
     restart: always
-    # volumes:
-    #   - .:/usr/src/app
-    #   - /usr/src/app/node_modules
-    #   - /usr/src/app/apps/auth/node_modules
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+      - /usr/src/app/apps/auth/node_modules
     networks:
       - shared_services
     env_file:
@@ -48,10 +48,10 @@ services:
       target: development
     command: pnpm run start:dev payments
     restart: always
-    # volumes:
-    #   - .:/usr/src/app
-    #   - /usr/src/app/node_modules
-    #   - /usr/src/app/apps/payments/node_modules
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+      - /usr/src/app/apps/payments/node_modules
     networks:
       - shared_services
     env_file:
@@ -65,10 +65,10 @@ services:
       target: development
     command: pnpm run start:dev notifications
     restart: always
-    # volumes:
-    #   - .:/usr/src/app
-    #   - /usr/src/app/node_modules
-    #   - /usr/src/app/apps/notifications/node_modules
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+      - /usr/src/app/apps/notifications/node_modules
     networks:
       - shared_services
     env_file:
