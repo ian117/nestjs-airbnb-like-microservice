@@ -5,6 +5,7 @@ import {
   LoggerModule,
   AUTH_SERVICE,
   PAYMENTS_SERVICE,
+  HealthModule,
 } from '@app/common';
 
 import { ReservationsService } from './reservations.service';
@@ -60,6 +61,7 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
         }),
       },
     ]),
+    HealthModule,
   ],
   controllers: [ReservationsController],
   providers: [ReservationsService, ReservationsRepository],
