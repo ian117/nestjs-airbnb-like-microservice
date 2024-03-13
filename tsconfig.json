@@ -25,5 +25,8 @@
         "libs/common/src/*"
       ]
     }
-  }
+  },
+  "include": [
+    "./apps/**/*" // cannot find module or its corresponding type declarations monorepo // nested node_modules | npm workspaces ts
+  ]
 }
